@@ -1,0 +1,1107 @@
+@import '@moetopia/ui/styles.css';
+@source './';
+
+:root {
+  --ep-breeze-duration: 800ms;
+  --ep-breeze-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ep-breeze-inout: cubic-bezier(0.4, 0, 0.2, 1);
+  --ep-font-serif: 'Shippori Mincho', 'Yu Mincho', 'Hiragino Mincho ProN', 'Noto Serif CJK JP', 'Songti SC', serif;
+  --ep-font-display: 'Cormorant Garamond', 'Shippori Mincho', Georgia, serif;
+  --ep-font-sans: 'Inter', 'Hiragino Sans', 'Yu Gothic UI', 'Microsoft YaHei', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100dvh;
+  font-family: var(--ep-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Main Ethereal Viewport */
+.moe-ethereal-viewport {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  width: 100%;
+  padding: clamp(24px, 4dvh, 56px) clamp(20px, 5vw, 72px);
+  background-color: var(--ep-canvas-bg);
+  background-image: var(--ep-canvas-gradient);
+  color: var(--ep-title);
+  overflow: hidden;
+  transition:
+    background-color var(--ep-breeze-duration) var(--ep-breeze-inout),
+    color var(--ep-breeze-duration) var(--ep-breeze-inout);
+}
+
+/* Breathing Ambient Light Halos */
+.moe-ambient-aurora {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.moe-ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  transition:
+    background-color var(--ep-breeze-duration) var(--ep-breeze-inout),
+    transform 900ms var(--ep-breeze-ease);
+}
+
+.moe-ambient-orb.orb-primary {
+  top: 8%;
+  left: 18%;
+  width: 44vw;
+  height: 44vw;
+  max-width: 540px;
+  max-height: 540px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, transparent 72%);
+  animation: ep-orb-breathe 14s ease-in-out infinite alternate;
+}
+
+.moe-ambient-orb.orb-secondary {
+  bottom: 6%;
+  right: 16%;
+  width: 38vw;
+  height: 38vw;
+  max-width: 460px;
+  max-height: 460px;
+  background: radial-gradient(circle, var(--ep-watermark) 0%, transparent 72%);
+  animation: ep-orb-breathe 18s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes ep-orb-breathe {
+  0% {
+    opacity: 0.26;
+    scale: 0.94;
+  }
+  100% {
+    opacity: 0.44;
+    scale: 1.08;
+  }
+}
+
+/* Floating Decorative Lucide Icons */
+.moe-floating-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.moe-floating-item {
+  position: absolute;
+  opacity: 0.76;
+  transition:
+    transform 600ms var(--ep-breeze-ease),
+    color var(--ep-breeze-duration) var(--ep-breeze-inout);
+}
+
+.moe-floating-item svg {
+  display: block;
+  animation: ep-breeze-drift 8.5s ease-in-out infinite alternate;
+}
+
+@keyframes ep-breeze-drift {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(5px, -6px, 0) rotate(4deg);
+  }
+  100% {
+    transform: translate3d(-3px, -11px, 0) rotate(-5deg);
+  }
+}
+
+/* Right-Side Vertical Poetic Typography */
+.moe-vertical-poem-rail {
+  position: fixed;
+  right: clamp(24px, 6.4vw, 96px);
+  top: 48%;
+  z-index: 3;
+  pointer-events: none;
+  user-select: none;
+}
+
+.moe-vertical-poem {
+  margin: 0;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--ep-font-serif);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.68em;
+  line-height: 1.8;
+  color: var(--ep-poem);
+  opacity: 0.85;
+  transition: color var(--ep-breeze-duration) var(--ep-breeze-inout);
+}
+
+.moe-poem-char {
+  display: inline-block;
+  animation:
+    ep-char-cascade 760ms var(--ep-breeze-ease) both,
+    ep-char-breeze 6s ease-in-out infinite alternate;
+  animation-delay:
+    calc(var(--char-idx, 0) * 55ms),
+    calc(var(--char-idx, 0) * 180ms + 800ms);
+}
+
+@keyframes ep-char-cascade {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ep-char-breeze {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(1.8px);
+  }
+}
+
+/* Centered Stage */
+.moe-stage {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 736px);
+  margin-inline: auto;
+}
+
+/* Giant Watermark (503 / 404 / 403 / 500 / 定期メンテナンス) */
+.moe-watermark-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: clamp(92px, 14dvh, 148px);
+  margin-bottom: clamp(12px, 2.2dvh, 26px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.moe-watermark {
+  font-family: var(--ep-font-display);
+  font-size: clamp(84px, 11.2vw, 154px);
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  color: var(--ep-watermark);
+  animation: ep-watermark-breathe 9s ease-in-out infinite alternate;
+  transition: color var(--ep-breeze-duration) var(--ep-breeze-inout);
+}
+
+.moe-watermark[data-watermark-style='kanji'] {
+  font-family: var(--ep-font-serif);
+  font-size: clamp(36px, 6.2vw, 86px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+}
+
+@keyframes ep-watermark-breathe {
+  0% {
+    opacity: 0.88;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+/* Eyebrow Status Label */
+.moe-eyebrow {
+  margin: 0 0 clamp(18px, 2.6dvh, 28px);
+  font-family: var(--ep-font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ep-eyebrow);
+  text-align: center;
+  transition: color var(--ep-breeze-duration) var(--ep-breeze-inout);
+}
+
+/* Main Soft Glassmorphism Card */
+.moe-glass-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 312px minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 4vw, 48px);
+  width: 100%;
+  padding: 24px 40px 24px 24px;
+  border-radius: 22px;
+  background: var(--ep-card-bg);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow: var(--ep-card-shadow);
+  transform-style: preserve-3d;
+  transition:
+    background-color var(--ep-breeze-duration) var(--ep-breeze-inout),
+    box-shadow var(--ep-breeze-duration) var(--ep-breeze-inout),
+    transform 420ms var(--ep-breeze-ease);
+}
+
+/* Interactive Specular Glass Sheen */
+.moe-card-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    420px circle at var(--glare-x, 50%) var(--glare-y, 50%),
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  opacity: 0;
+  transition: opacity 450ms var(--ep-breeze-ease);
+}
+
+.moe-glass-card.is-hovered .moe-card-glare {
+  opacity: 1;
+}
+
+/* Left Column: Illustration Frame */
+.moe-card-media {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.moe-scene-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+    0 10px 28px -10px rgba(0, 0, 0, 0.12);
+}
+
+.moe-scene-img-stage {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+  opacity: 0;
+  filter: blur(10px);
+  transform: scale(1.06);
+  transition:
+    opacity 720ms var(--ep-breeze-inout),
+    filter 720ms var(--ep-breeze-inout),
+    transform 520ms var(--ep-breeze-ease);
+}
+
+.moe-scene-img-stage.is-loaded {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.moe-scene-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: ep-ken-burns 20s ease-in-out infinite alternate;
+  transition: transform 700ms var(--ep-breeze-ease);
+}
+
+.moe-glass-card.is-hovered .moe-scene-image {
+  transform: scale(1.035);
+}
+
+@keyframes ep-ken-burns {
+  0% {
+    scale: 1.02;
+    translate: -1.5% 0%;
+  }
+  100% {
+    scale: 1.07;
+    translate: 1.5% -1%;
+  }
+}
+
+/* Scene Atmospheric Overlays */
+.moe-scene-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.moe-scene-vignette {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 28px rgba(255, 255, 255, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+
+.moe-atmo-svg,
+.moe-atmo-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 403 Rain Streaks */
+.moe-rain-drop {
+  stroke: rgba(255, 255, 255, 0.42);
+  stroke-width: 1;
+  stroke-dasharray: 26 90;
+  animation: ep-rain-slide 3.2s linear infinite;
+}
+.moe-rain-drop.d2 {
+  animation-duration: 2.7s;
+  animation-delay: -1.1s;
+  stroke-dasharray: 18 110;
+}
+.moe-rain-drop.d3 {
+  animation-duration: 3.6s;
+  animation-delay: -2.3s;
+}
+.moe-rain-drop.d4 {
+  animation-duration: 2.9s;
+  animation-delay: -0.6s;
+  stroke-dasharray: 22 95;
+}
+
+@keyframes ep-rain-slide {
+  from {
+    stroke-dashoffset: 120;
+  }
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+/* 404 Sunset Flare & Floating Light Motes */
+.moe-sun-flare {
+  position: absolute;
+  top: -15%;
+  left: -15%;
+  width: 65%;
+  height: 65%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 244, 218, 0.36) 0%, transparent 70%);
+  animation: ep-flare-pulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes ep-flare-pulse {
+  from {
+    opacity: 0.45;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 0.85;
+    transform: scale(1.12);
+  }
+}
+
+.moe-mote,
+.moe-spore {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.moe-mote {
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 252, 236, 0.78);
+  box-shadow: 0 0 8px rgba(255, 245, 210, 0.75);
+  animation: ep-mote-float 7s ease-in-out infinite;
+}
+.moe-mote.m1 { left: 22%; top: 68%; animation-delay: 0s; }
+.moe-mote.m2 { left: 48%; top: 76%; width: 4px; height: 4px; animation-delay: -2.2s; }
+.moe-mote.m3 { left: 74%; top: 62%; width: 6px; height: 6px; animation-delay: -4.1s; }
+.moe-mote.m4 { left: 34%; top: 42%; width: 3.5px; height: 3.5px; animation-delay: -1.4s; }
+
+/* 500 Bioluminescent Spores */
+.moe-spore {
+  width: 4.5px;
+  height: 4.5px;
+  background: rgba(190, 238, 255, 0.82);
+  box-shadow: 0 0 10px rgba(168, 215, 255, 0.9);
+  animation: ep-mote-float 8.5s ease-in-out infinite;
+}
+.moe-spore.s1 { left: 18%; top: 74%; animation-delay: -0.5s; }
+.moe-spore.s2 { left: 38%; top: 82%; width: 6px; height: 6px; animation-delay: -3.1s; }
+.moe-spore.s3 { left: 56%; top: 68%; width: 3.5px; height: 3.5px; animation-delay: -1.8s; }
+.moe-spore.s4 { left: 78%; top: 76%; animation-delay: -5.2s; }
+.moe-spore.s5 { left: 28%; top: 46%; width: 4px; height: 4px; animation-delay: -2.6s; }
+
+@keyframes ep-mote-float {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.6);
+  }
+  45% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(10px, -38px, 0) scale(1.15);
+  }
+}
+
+/* 503 & Maintenance Komorebi Sunbeams */
+.moe-komorebi-beam {
+  position: absolute;
+  top: -30%;
+  width: 36%;
+  height: 160%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 253, 240, 0) 0%,
+    rgba(255, 253, 240, 0.22) 50%,
+    rgba(255, 253, 240, 0) 100%
+  );
+  transform: rotate(28deg);
+  animation: ep-beam-sway 9s ease-in-out infinite alternate;
+}
+.moe-komorebi-beam.b1 {
+  left: 8%;
+}
+.moe-komorebi-beam.b2 {
+  left: 46%;
+  width: 24%;
+  animation-delay: -3.5s;
+}
+
+@keyframes ep-beam-sway {
+  from {
+    opacity: 0.35;
+    transform: rotate(26deg) translateX(-8px);
+  }
+  to {
+    opacity: 0.72;
+    transform: rotate(30deg) translateX(10px);
+  }
+}
+
+.moe-scene-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.moe-scene-canvas-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Right Column: Poetic Content */
+.moe-card-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding-block: 8px;
+}
+
+.moe-stagger-item {
+  animation: ep-stagger-rise 620ms var(--ep-breeze-ease) both;
+  animation-delay: calc(var(--stagger, 0) * 75ms);
+}
+
+@keyframes ep-stagger-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.moe-card-title {
+  margin: 0 0 16px;
+  font-family: var(--ep-font-sans);
+  font-size: clamp(19px, 2vw, 22px);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--ep-title);
+}
+
+.moe-card-title[data-weight='regular'] {
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+.moe-card-desc {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.85;
+  letter-spacing: 0.015em;
+  color: var(--ep-desc);
+}
+
+/* Maintenance Progress Bar */
+.moe-progress-block {
+  margin-top: 26px;
+}
+
+.moe-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+
+.moe-progress-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ep-title);
+}
+
+.moe-progress-value {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--ep-desc);
+}
+
+.moe-progress-track {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ep-progress-track);
+  overflow: hidden;
+}
+
+.moe-progress-bar-fill {
+  position: relative;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--ep-progress-fill);
+  overflow: hidden;
+  transition: width var(--ep-breeze-duration) var(--ep-breeze-ease);
+}
+
+.moe-progress-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: ep-progress-shimmer 2.8s ease-in-out infinite;
+}
+
+@keyframes ep-progress-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Schedule Table (Page 5 / Maintenance) */
+.moe-schedule-list {
+  margin: 22px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--ep-divider);
+}
+
+.moe-schedule-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ep-divider);
+  font-size: 11px;
+}
+
+.moe-schedule-term {
+  font-weight: 600;
+  color: var(--ep-title);
+}
+
+.moe-schedule-detail {
+  margin: 0;
+  color: var(--ep-desc);
+  letter-spacing: 0.02em;
+}
+
+/* Action Button Overrides for @moetopia/ui MoeButton */
+.moe-action-wrap {
+  margin-top: 24px;
+}
+
+.moe-button.moe-ethereal-btn {
+  --moe-control-height: 36px;
+  --moe-control-padding: 20px;
+  border-radius: 8px;
+  border-color: var(--ep-btn-border);
+  color: var(--ep-btn-text);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  background: transparent;
+  transition:
+    background-color 320ms var(--ep-breeze-ease),
+    border-color 320ms var(--ep-breeze-ease),
+    box-shadow 320ms var(--ep-breeze-ease),
+    transform 320ms var(--ep-breeze-ease);
+}
+
+.moe-button.moe-ethereal-btn:not(:disabled):hover {
+  background: var(--ep-btn-hover);
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.12);
+  filter: none;
+  transform: translateY(-1.5px);
+}
+
+/* Footer Trace Code */
+.moe-trace-footer {
+  margin-top: clamp(22px, 3.2dvh, 34px);
+  font-family: var(--ep-font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ep-trace);
+  text-align: center;
+  opacity: 0.85;
+}
+
+/* Breeze Smart-Animate Transitions (800ms Ease In & Out) */
+.moe-breeze-card-enter-active,
+.moe-breeze-card-leave-active {
+  transition:
+    opacity 540ms var(--ep-breeze-inout),
+    transform 540ms var(--ep-breeze-ease),
+    filter 540ms var(--ep-breeze-inout);
+}
+
+.moe-breeze-card-enter-from {
+  opacity: 0;
+  transform: translateY(12px) scale(0.985);
+  filter: blur(5px);
+}
+
+.moe-breeze-card-leave-to {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.985);
+  filter: blur(5px);
+}
+
+.moe-breeze-watermark-enter-active,
+.moe-breeze-watermark-leave-active,
+.moe-breeze-fade-enter-active,
+.moe-breeze-fade-leave-active {
+  transition:
+    opacity 460ms var(--ep-breeze-inout),
+    transform 460ms var(--ep-breeze-ease),
+    filter 460ms var(--ep-breeze-inout);
+}
+
+.moe-breeze-watermark-enter-from,
+.moe-breeze-fade-enter-from {
+  opacity: 0;
+  transform: translateY(6px);
+  filter: blur(2px);
+}
+
+.moe-breeze-watermark-leave-to,
+.moe-breeze-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+  filter: blur(2px);
+}
+
+/* Custom Cursor & Stardust Sparks */
+.moe-cursor-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.moe-cursor-spark {
+  position: fixed;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.55;
+  pointer-events: none;
+  animation: ep-spark-fade 660ms var(--ep-breeze-ease) forwards;
+}
+
+@keyframes ep-spark-fade {
+  0% {
+    opacity: 0.65;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--spark-dx, 0px)), calc(-50% + var(--spark-dy, -12px))) scale(0.15);
+  }
+}
+
+.moe-cursor-halo {
+  position: fixed;
+  top: -16px;
+  left: -16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: 0.25;
+  transition:
+    width 280ms var(--ep-breeze-ease),
+    height 280ms var(--ep-breeze-ease),
+    top 280ms var(--ep-breeze-ease),
+    left 280ms var(--ep-breeze-ease),
+    opacity 280ms var(--ep-breeze-ease);
+}
+
+.moe-cursor-halo.is-hovered {
+  top: -22px;
+  left: -22px;
+  width: 44px;
+  height: 44px;
+  opacity: 0.44;
+}
+
+.moe-cursor-halo.is-pressed {
+  top: -12px;
+  left: -12px;
+  width: 24px;
+  height: 24px;
+  opacity: 0.6;
+}
+
+.moe-cursor-star {
+  position: fixed;
+  top: -7px;
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  opacity: 0.58;
+}
+
+.moe-cursor-star svg {
+  display: block;
+  animation: ep-star-spin 10s linear infinite;
+  transition: scale 220ms var(--ep-breeze-ease);
+}
+
+.moe-cursor-star.is-hovered svg {
+  animation-duration: 3.5s;
+  scale: 1.2;
+}
+
+.moe-cursor-star.is-pressed svg {
+  scale: 0.85;
+}
+
+@keyframes ep-star-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Bottom-Right Floating Matrix Inspector (Dev Only) */
+.moe-inspector {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.moe-inspector-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(252, 251, 248, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.08);
+}
+
+.moe-inspector-pages {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.moe-inspector-tab {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ep-desc);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.moe-inspector-tab:hover {
+  color: var(--ep-title);
+}
+
+.moe-inspector-tab.is-active {
+  background: var(--ep-accent);
+  color: #ffffff;
+}
+
+.moe-inspector-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--ep-divider);
+  margin-inline: 2px;
+}
+
+.moe-inspector-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ep-title);
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.moe-inspector-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.moe-inspector-drawer {
+  width: 276px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(252, 251, 248, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 18px 42px -12px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.moe-inspector-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.moe-inspector-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ep-title);
+}
+
+.moe-inspector-label-between {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ep-title);
+}
+
+.moe-inspector-seg {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 3px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.moe-inspector-seg-btn {
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ep-desc);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.moe-inspector-seg-btn.is-active {
+  background: #ffffff;
+  color: var(--ep-title);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.moe-inspector-range {
+  width: 100%;
+  accent-color: var(--ep-accent);
+  cursor: pointer;
+}
+
+.moe-inspector-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--ep-divider);
+}
+
+.moe-inspector-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border: 1px solid var(--ep-divider);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ep-title);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 180ms ease;
+}
+
+.moe-inspector-action:hover,
+.moe-inspector-action.is-active {
+  background: #ffffff;
+  border-color: var(--ep-accent);
+}
+
+.moe-breeze-pop-enter-active,
+.moe-breeze-pop-leave-active {
+  transition:
+    opacity 220ms ease,
+    transform 220ms var(--ep-breeze-ease);
+}
+
+.moe-breeze-pop-enter-from,
+.moe-breeze-pop-leave-to {
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+}
+
+/* Responsive Layout */
+@media (max-width: 820px) {
+  .moe-vertical-poem-rail {
+    display: none;
+  }
+
+  .moe-glass-card {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+    padding: 20px;
+    gap: 22px;
+  }
+
+  .moe-card-body {
+    padding-inline: 4px;
+    padding-bottom: 4px;
+  }
+}
+
+@media (max-width: 520px) {
+  .moe-inspector {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    align-items: center;
+  }
+
+  .moe-inspector-pill {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moe-floating-item svg,
+  .moe-cursor-star svg,
+  .moe-scene-image,
+  .moe-ambient-orb,
+  .moe-watermark,
+  .moe-poem-char,
+  .moe-stagger-item,
+  .moe-progress-shimmer,
+  .moe-rain-drop,
+  .moe-sun-flare,
+  .moe-mote,
+  .moe-spore,
+  .moe-komorebi-beam {
+    animation: none;
+  }
+
+  .moe-ethereal-viewport,
+  .moe-glass-card,
+  .moe-progress-bar-fill,
+  .moe-breeze-card-enter-active,
+  .moe-breeze-card-leave-active,
+  .moe-breeze-watermark-enter-active,
+  .moe-breeze-watermark-leave-active,
+  .moe-breeze-fade-enter-active,
+  .moe-breeze-fade-leave-active {
+    transition: none;
+  }
+}
